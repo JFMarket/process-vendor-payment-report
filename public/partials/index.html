@@ -1,0 +1,40 @@
+<!-- Show upload form -->
+<div class="row">
+	<div class="large-12 columns">
+		<div class="panel">
+			<h2>Instructions:</h2>
+			<ol>
+				<li>
+					<a href="https://jfmarket.shopkeepapp.com/login">Login to ShopKeep.</a>
+				</li>
+				<li>
+					<a href="https://jfmarket.shopkeepapp.com/sold_items/new_export" target="_blank">Download the CSV.</a>
+				</li>
+				<li><input type="file" accept="text/csv" id="uploadCSV" onchange="angular.element(this).scope().processUpload(this.files)"></li>
+				<li>Results will appear below.</li>
+			</ol>
+		</div>
+	</div>
+</div>
+
+<div ng-show="uploaded">
+	<!-- Show results -->
+	<div class="row">
+		<div class="large-12 columns">
+			<table>
+				<tr>
+					<th>Name</th>
+					<th>Total</th>
+					<th>Fee(%)</th>
+					<th>Final</th>
+				</tr>
+				<tr ng-repeat="farmer in results">
+					<td>{{ farmer["Name"] }}</td>
+					<td>{{ farmer["Total"] | currency }}</td>
+					<td><input type="text" ng-model="farmer.fee" ng-init="farmer.fee = 20"></td>
+					<td>{{ farmer.fee ? (100 - farmer.fee) / 100 * farmer["Total"] : 0.8 * farmer["Total"] | currency }}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
