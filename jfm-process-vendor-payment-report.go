@@ -5,6 +5,7 @@ import (
 	"github.com/codegangsta/martini"
 	"github.com/martini-contrib/render"
 	"net/http"
+	"sort"
 	"strconv"
 	// "fmt"
 )
@@ -66,9 +67,15 @@ func SoldItemFromStrings(s []string) *SoldItem {
 }
 
 type SaleDataByVendor struct {
-	Name string
+	Name  string
 	Total float64
 }
+
+type ByName []SaleDataByVendor
+
+func (n ByName) Len() int           { return len(n) }
+func (n ByName) Swap(i, j int)      { n[i], n[j] = n[j], n[i] }
+func (n ByName) Less(i, j int) bool { return n[i].Name < n[j].Name }
 
 func upload(req *http.Request, r render.Render) {
 	file, _, err := req.FormFile("csv")
@@ -115,6 +122,8 @@ func upload(req *http.Request, r render.Render) {
 
 		data = append(data, SaleDataByVendor{n, total})
 	}
+
+	sort.Sort(ByName(data))
 
 	r.JSON(200, data)
 }
