@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/csv"
+	"flag"
 	"github.com/codegangsta/martini"
 	"github.com/martini-contrib/render"
 	"net/http"
@@ -11,6 +12,9 @@ import (
 )
 
 func main() {
+	var port = flag.String("port", ":3000", "Which port to listen on")
+	flag.Parse()
+
 	m := martini.Classic()
 
 	m.Use(martini.Static("app"))
@@ -23,7 +27,7 @@ func main() {
 
 	m.Post("/upload", upload)
 
-	m.Run()
+	m.RunOnAddr(*port)
 }
 
 type SoldItem struct {
