@@ -1,1 +1,1 @@
-web: process-vendor-payment-report -port=$PORT
+web: PORT=$PORT process-vendor-payment-report
